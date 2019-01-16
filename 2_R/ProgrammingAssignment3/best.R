@@ -4,12 +4,11 @@
 
 best <- function( state, outcome ) {
       ## Read outcome data
-      
       data <- read.csv("outcome-of-care-measures.csv", 
                        na.strings = "Not Available", 
                        stringsAsFactors = FALSE)
-      names(data)[c(11,17,23)] = c("heart.attack","heart.failure","pneumonia")
-      
+      mortality_names <- c("heart.attack","heart.failure","pneumonia")
+      names(data)[c(11,17,23)] = mortality_names
       outcome <- gsub(" ", ".",outcome)
       
       ## Check that state and outcome are valid
@@ -17,7 +16,7 @@ best <- function( state, outcome ) {
             stop("invalid state")
       }
       
-      if(!(outcome %in% c("heart.attack","heart.failure","pneumonia"))) {
+      if(!(outcome %in% mortality_names)) {
             stop("invalid outcome")
       }
       
