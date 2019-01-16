@@ -15,7 +15,6 @@ best <- function( state, outcome ) {
       if(!(state %in% data$State)) {
             stop("invalid state")
       }
-      
       if(!(outcome %in% mortality_names)) {
             stop("invalid outcome")
       }
