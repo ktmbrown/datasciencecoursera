@@ -3,21 +3,22 @@ library(httr)
 library(XML)
 
 
-fileURL <- 'https://www.realtytrac.com/mapsearch/real-estate/tx/bexar-county/?sortbyfield=proximity,asc&itemsper=50'
+fileURL <- 'https://www.realtor.com/realestateandhomes-search/San-Antonio_TX/pg-1'
 r = GET(fileURL)
-doc <- htmlTreeParse(r, useInternal=TRUE)
-propertyDet <- xpathSApply(doc, "//span[@class='propertyInfo']/dd",xmlValue)
+content2 <- content(r,as="text",encoding="UTF-8")
+doc <- htmlParse(content2, asText = TRUE)
 
 # Replace all \n by spaces
 
-street <- xpathSApply(doc, "//span[@itemprop='streetAddress']",xmlValue)
-city <- xpathSApply(doc, "//span[@itemprop='addressLocality']",xmlValue)
-state <- xpathSApply(doc, "//span[@itemprop='addressRegion']",xmlValue)
-zip <- xpathSApply(doc, "//span[@itemprop='postalCode']",xmlValue)
-price <- xpathSApply(doc, "//span[@class='propertyInfo']/dd[@class='price']",xmlValue)
-bed <- propertyDet[seq(1,length(propertyDet),5)]
-bath <- propertyDet[seq(2,length(propertyDet),5)]
-sqft <- propertyDet[seq(3,length(propertyDet),5)]
+street <- xpathSApply(doc, "//span[@class='listing-street-address']",xmlValue)
+city <- xpathSApply(doc, "//span[@class='listing-city']",xmlValue)
+state <- xpathSApply(doc, "//span[@class='listing-region']",xmlValue)
+zip <- xpathSApply(doc, "//span[@class='listing-postal']",xmlValue)
+price <- xpathSApply(doc, "//span[@class='data-price']",xmlValue)
+bed <- xpathSApply(doc, "//li[@data-label='property-meta-beds']/span[@class='data-value meta-beds']",xmlValue)
+bath <- xpathSApply(doc, "//li[@data-label='property-meta-baths']/span[@class='data-value']",xmlValue)
+sqft <- xpathSApply(doc, "//li[@data-label='property-meta-sqft']/span[@class='data-value']",xmlValue)
+lotsize <- xpathSApply(doc, "//li[@data-label='property-meta-lotsize']/span[@class='data-value']",xmlValue)
 
-property_df <- data.frame(cbind(street,city,state,zip,price,bed,bath,sqft))
+property_df <- data.frame(cbind(street,city,state,zip,price,bed,bath,sqft,lotsize))
                    
