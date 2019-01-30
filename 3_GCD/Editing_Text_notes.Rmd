@@ -2,7 +2,8 @@
 title: "Editing Text Variables"
 author: "Katie M Brown"
 date: "January 30, 2019"
-output: rmarkdown::github_document
+output: html_document:
+            keep_md: true
 ---
 
 ```{r setup, include=FALSE}
