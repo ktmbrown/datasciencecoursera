@@ -5,10 +5,9 @@ date: "January 30, 2019"
 output: html_document:
             keep_md: true
 ---
-```{r, echo = FALSE}
-knitr::opts_chunk$set(
-  fig.path = "README_figs/README-"
-)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # Camera Data
