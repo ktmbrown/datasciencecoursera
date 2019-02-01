@@ -1,0 +1,81 @@
+library(stringr)
+library(dplyr)
+#---------------------------- DOWNLOADING FILE --------------------------------#
+
+# Getting data from website
+if(!file.exists("./data")){dir.creat("./data")}
+url <- 'https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip'
+download.file(url, destfile = './data/activity.zip',method='curl' )
+unzip('./data/activity.zip',exdir = './data')
+file.rename('./data/UCI HAR Dataset/','./data/UCI/')
+
+#--------------------------- READING TEST DATA --------------------------------#
+
+# reading in Activity Labels
+activity_file <- './data/UCI/activity_labels.txt'
+ActivityLabels <- read.table(activity_file,fill=T,header = FALSE)
+names(ActivityLabels) <- c('ActivityNum','Activity')
+
+# reading in Features
+feat_file <- './data/UCI/features.txt'
+Features <- read.table(feat_file, header = FALSE,fill=T, stringsAsFactors = FALSE)
+names(Features) <- c('FeatureNum', 'Feature')
+
+#--------------------------- READING TEST DATA --------------------------------#
+
+#  reading in test subject data
+sub_test_file <- './data/UCI/test/subject_test.txt'
+Subjects_test <- read.table(sub_test_file,fill=T,header = FALSE)
+names(Subjects_test) <- c('Subject')
+Subjects <- Subjects_test$Subject
+
+# reading in test data
+test_file <- './data/UCI/test/X_test.txt'
+test <- read.table(test_file,fill=T,header = FALSE)
+
+# reading in activity vector for test data
+act_test_file <- './data/UCI/test/y_test.txt'
+Activity_data <- read.table(act_test_file,fill=T,header = FALSE)
+names(Activity_data) <- c('Activity')
+Activity <- as.factor(Activity_data$Activity)
+levels(Activity) <- factor(ActivityLabels$Activity)
+
+# combining all columns for test data
+test_df <- cbind(test,Subjects,Activity)
+names(test_df) <- c(Features$Feature,'Subject','Activity')
+
+#--------------------------- READING TRAIN DATA -------------------------------#
+
+# reading in train subject data
+sub_train_file <- './data/UCI/train/subject_train.txt'
+Subjects_train <- read.table(sub_train_file,fill=T,header = FALSE)
+names(Subjects_train) <- c('Subject')
+Subjects.1 <- Subjects_train$Subject
+
+# reading in train data
+train_file <- './data/UCI/train/X_train.txt'
+train <- read.table(train_file,fill=T,header = FALSE)
+
+# reading in activity vector for train data
+act_train_file <- './data/UCI/train/y_train.txt'
+Activity_data.1 <- read.table(act_train_file,fill=T,header = FALSE)
+names(Activity_data.1) <- c('Activity')
+Activity.1 <- as.factor(Activity_data.1$Activity)
+levels(Activity.1) <- factor(ActivityLabels$Activity)
+
+# combining all columns for test data
+train_df <- cbind(train,Subjects.1,Activity.1)
+names(train_df) <- c(Features$Feature,'Subject','Activity')
+
+#------------------------------ MERGING DATA ----------------------------------#
+
+# merging test and train sets
+tidy_df <- rbind(test_df,train_df)
+
+#------------------------- EXTRACTING RELEVANT DATA ---------------------------#
+
+# creating a vector of relevant indices to extract only mean() and std() data
+relevant_indices <- grep('mean[(][)]|std[(][)]',Features$Feature)
+relevant_df <- tidy_df[,relevant_indices]
+
+
