@@ -9,7 +9,7 @@ download.file(url, destfile = './data/activity.zip',method='curl' )
 unzip('./data/activity.zip',exdir = './data')
 file.rename('./data/UCI HAR Dataset/','./data/UCI/')
 
-#--------------------------- READING TEST DATA --------------------------------#
+#------------------------ READING ACT & FEAT DATA -----------------------------#
 
 # reading in Activity Labels
 activity_file <- './data/UCI/activity_labels.txt'
@@ -20,6 +20,12 @@ names(ActivityLabels) <- c('ActivityNum','Activity')
 feat_file <- './data/UCI/features.txt'
 Features <- read.table(feat_file, header = FALSE,fill=T, stringsAsFactors = FALSE)
 names(Features) <- c('FeatureNum', 'Feature')
+Features$Feature <- gsub('^fBodyBody|^fBody','FreqBody',Features$Feature)
+Features$Feature <- gsub('^tBody','TimeBody',Features$Feature)
+Features$Feature <- gsub('^tGravity','TimeGravity',Features$Feature)
+Features$Feature <- gsub('^angle[(]tBody','angle(TimeBody',Features$Feature)
+Features$Feature <- gsub('^angle[(]gravity','angle(Gravity', Features$Feature)
+Features$Feature <- gsub('gravity','Gravity', Features$Feature)
 
 #--------------------------- READING TEST DATA --------------------------------#
 
@@ -27,7 +33,7 @@ names(Features) <- c('FeatureNum', 'Feature')
 sub_test_file <- './data/UCI/test/subject_test.txt'
 Subjects_test <- read.table(sub_test_file,fill=T,header = FALSE)
 names(Subjects_test) <- c('Subject')
-Subjects <- Subjects_test$Subject
+Subjects <- as.factor(Subjects_test$Subject)
 
 # reading in test data
 test_file <- './data/UCI/test/X_test.txt'
@@ -50,7 +56,7 @@ names(test_df) <- c(Features$Feature,'Subject','Activity')
 sub_train_file <- './data/UCI/train/subject_train.txt'
 Subjects_train <- read.table(sub_train_file,fill=T,header = FALSE)
 names(Subjects_train) <- c('Subject')
-Subjects.1 <- Subjects_train$Subject
+Subjects.1 <- as.factor(Subjects_train$Subject)
 
 # reading in train data
 train_file <- './data/UCI/train/X_train.txt'
@@ -76,6 +82,14 @@ merged_df <- rbind(test_df,train_df)
 
 # creating a vector of relevant indices to extract only mean() and std() data
 relevant_indices <- grep('mean[(][)]|std[(][)]',names(merged_df))
-tidy_df <- merged_df[,relevant_indices]
+tidy_df <- merged_df[,c(relevant_indices,562:563)]
 
 
+#------------------------ AVGs by ACTIVITY & SUBJECT --------------------------#
+
+# finding the average of all variables grouped by Subject and Activity
+avg_df <- tidy_df %>% group_by(Subject,Activity) %>% summarize_all(mean)
+
+# renaming all variables with "avg." prefix (except Subject and Activity)
+new_avg_names <- paste0('avg.',names(avg_df[-c(1:2)]))
+names(avg_df) <- c('Subject','Activity',new_avg_names)

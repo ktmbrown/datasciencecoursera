@@ -1,0 +1,36 @@
+---
+title: "Human Activity Recognition Using Smartphones: Codebook"
+author: "Katie M Brown"
+date: "February 4, 2019"
+output: github_document
+---
+
+## Tidy Data
+
+*Disclaimer: This codebook modifies and updates the original codebooks with the data to indicate all the variables and summaries calculated, along with units, and any other relevant information.*
+
+This data set was created using the following files:
+
+- **README.txt**: general information about the gathering of data and the dataset itself
+- **features_info.txt**: information about the variables found in the feature vector
+- **features.txt**: a list of 561 features that links with the test/train data
+- **activity_labels.txt**: links the data in the training/testing sets with their appropriate descriptive label using a key (1-6)
+- **train/X_train.txt**: Training set
+- **train/y_train.txt**: Training labels
+- **test/X_test.txt**: Test set
+- **test/y_test.txt**: Test labels
+
+In addition to the original data (which was merged together in one tidy dataset) an independent dataset was created using a subset of the features provided in the orginal dataset.  
+
+For each record in this independent dataset, the following has been provided:
+
+```{r echo = FALSE, message = FALSE}
+df <- data.frame(ColumnName = c('Subject','Activity','*see features below'),Description = c('Value that identifies the volunteer','Descriptive identifier that represents the activity performed by the subject','66-Feature vector that holds the average value for each feature from original dataset'), Class = c('Factor','Factor','Numeric Vector'),Contents = c('Number from 1-30','WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING','Averages of the features below that are normalized and bounded within [-1,1]'))
+
+knitr::kable(df)
+```
+
+
+
+
+
