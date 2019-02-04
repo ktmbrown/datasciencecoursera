@@ -1,0 +1,10 @@
+# ignore README.txt
+README.txt
+
+# ignore folder named 'data'
+3_GCD/data/
+
+# ignore zip files
+*.zip
+
+.Rdata
