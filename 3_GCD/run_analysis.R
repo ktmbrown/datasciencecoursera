@@ -70,12 +70,12 @@ names(train_df) <- c(Features$Feature,'Subject','Activity')
 #------------------------------ MERGING DATA ----------------------------------#
 
 # merging test and train sets
-tidy_df <- rbind(test_df,train_df)
+merged_df <- rbind(test_df,train_df)
 
 #------------------------- EXTRACTING RELEVANT DATA ---------------------------#
 
 # creating a vector of relevant indices to extract only mean() and std() data
-relevant_indices <- grep('mean[(][)]|std[(][)]',Features$Feature)
-relevant_df <- tidy_df[,relevant_indices]
+relevant_indices <- grep('mean[(][)]|std[(][)]',names(merged_df))
+tidy_df <- merged_df[,relevant_indices]
 
 
