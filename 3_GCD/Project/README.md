@@ -3,7 +3,6 @@ Human Activity Recognition Using Smartphones: README
 Katie M Brown
 February 4, 2019
 
-Human Activity Recognition Using Smartphones: README
 ----------------------------------------------------
 
 ##### A Variation on Human Activity Recognition Using Smartphones Dataset Version 1.0 (see license below)
