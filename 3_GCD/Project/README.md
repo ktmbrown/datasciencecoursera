@@ -77,10 +77,10 @@ Phase 5 is designed to extract only the measurements on the mean and standard de
 
 #### Phase 6
 
-Phase 6 is designed to group the tidy data set above by activity (6) and subject (30). After the data has been grouped, it is passed to the mean function and all the averages for each of the 66-feature vector are found. The resulting data frame of 180 observations (activity x subject) and 68 variables (made up of Subject, Activity and 66- feature vector) is described in the section below titled **Tidy Data: Independent Data Set**
+Phase 6 is designed to group the tidy data set above by activity (6) and subject (30). After the data has been grouped, it is passed to the mean function and all the averages for each of the 66-feature vector are found. The resulting data frame of 180 observations (activity x subject) and 68 variables (made up of Subject, Activity and 66- feature vector) is described in the section below titled **Tidy Data: Independent Data Set - Code Book**
 
-Tidy Data: Independent Data Set
--------------------------------
+Tidy Data: Independent Data Set - Code Book
+-------------------------------------------
 
 In addition to the original test and training data (which was merged together in one tidy dataset) an independent dataset was created (in Phase 7 of `run_analysis.R`) using a subset of the features provided in the orginal dataset.
 
