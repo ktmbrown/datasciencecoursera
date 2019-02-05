@@ -27,14 +27,14 @@ For each record in this independent dataset, the following has been provided:
 |:---------------------|:--------------------------------------------------------------------------------------|:---------------|:-------------------------------------------------------------------------------|
 | Subject              | Value that identifies the volunteer                                                   | Factor         | Number from 1-30                                                               |
 | Activity             | Descriptive identifier that represents the activity performed by the subject          | Factor         | WALKING, WALKING\_UPSTAIRS, WALKING\_DOWNSTAIRS, SITTING, STANDING, LAYING     |
-| \*see features below | 66-Feature vector that holds the average value for each feature from original dataset | Numeric Vector | Averages of the features below that are normalized and bounded within \[-1,1\] |
+| \*see features below | 66-Feature vector that holds the average value for each feature from original dataset | Numeric Vector | Averages of the features below that are normalized and bounded within (-1,1) |
 
 ### 66-Feature Vector
 
 The original dataset was made up of 10299 records and 561 features. The independent dataset is a subset of the original data, making up only the averages of features that are included in the following subset. This dataset is made up of:
 
-| Feature                        |
-|:-------------------------------|
+| Feature                        | Description                    |
+|:-------------------------------|:-------------------------------|
 | avg.TimeBodyAcc-mean()-X       |
 | avg.TimeBodyAcc-mean()-Y       |
 | avg.TimeBodyAcc-mean()-Z       |
@@ -104,7 +104,7 @@ The original dataset was made up of 10299 records and 561 features. The independ
 | avg.Subject                    |
 | avg.Activity                   |
 
-The data in this independent dataset are a subset, either a mean() or a std(), of the original features, which are listed here:
+The data in this independent dataset are a subset, either a mean() or a std(), of the original features, which are listed here. *Note: The 'XYZ' tag indicates 3 separate features, an X axis, Y axis and Z axis.*:
 
 | OriginalFeatures  |
 |:------------------|
@@ -125,6 +125,8 @@ The data in this independent dataset are a subset, either a mean() or a std(), o
 | fBodyAccJerkMag   |
 | fBodyGyroMag      |
 | fBodyGyroJerkMag  |
+
+The 33 datapoints above each have a feature based on the following 17 functions, making a total of 561 features in the original data set.
 
 | FunctionsOfFeatures |
 |:--------------------|
