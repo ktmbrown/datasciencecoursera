@@ -5,7 +5,7 @@ date: "February 4, 2019"
 output: github_document
 ---
 
-## Tidy Data
+## Tidy Data - Dataset of Averages 
 
 *Disclaimer: This codebook modifies and updates the original codebooks with the data to indicate all the variables and summaries calculated, along with units, and any other relevant information.*
 
@@ -20,7 +20,7 @@ This data set was created using the following files:
 - **test/X_test.txt**: Test set
 - **test/y_test.txt**: Test labels
 
-In addition to the original data (which was merged together in one tidy dataset) an independent dataset was created using a subset of the features provided in the orginal dataset.  
+In addition to the original test and training data (which was merged together in one tidy dataset) an independent dataset was created using a subset of the features provided in the orginal dataset.  
 
 For each record in this independent dataset, the following has been provided:
 
@@ -30,7 +30,42 @@ df <- data.frame(ColumnName = c('Subject','Activity','*see features below'),Desc
 knitr::kable(df)
 ```
 
+### 66-Feature Vector
 
+The original dataset was made up of 10299 records and 561 features.  The independent dataset is a subset of the original data, making up only the averages of features that are included in the following subset.  This dataset is made up of:
+
+```{r echo = FALSE, message = FALSE}
+data <- read.table('features_independent_data.txt',sep='\t')
+df1 <- data.frame(avg = 'avg.', feat = data)
+df1 <- data.frame(Feature=paste0(df1$avg, df1$x))
+names(df1) <- 'Feature'
+knitr::kable(df1)
+```
+
+The data in this independent dataset are a subset, either a mean() or a std(), of the original features, which are listed here:
+
+```{r echo = FALSE, message = FALSE}
+data2 <- read.table('feature_sum.txt',sep=' ')
+df2 <- data.frame(OriginalFeatures = data2)
+names(df2) <- c('OriginalFeatures')
+knitr::kable(df2)
+```
+
+Each of the datapoints above have a 
+```{r echo = FALSE, message = FALSE}
+data3 <- read.table('fun_sum.txt', sep=':')
+df3 <- data.frame(FunctionsOfFeatures = data3[,1])
+knitr::kable(df3)
+```
+
+The features selected for this database come from the accelerometer and gyroscope 3-axial raw signals tAcc-XYZ and tGyro-XYZ. These time domain signals (prefix 't' to denote time) were captured at a constant rate of 50 Hz. Then they were filtered using a median filter and a 3rd order low pass Butterworth filter with a corner frequency of 20 Hz to remove noise. Similarly, the acceleration signal was then separated into body and gravity acceleration signals (tBodyAcc-XYZ and tGravityAcc-XYZ) using another low pass Butterworth filter with a corner frequency of 0.3 Hz. 
+
+Subsequently, the body linear acceleration and angular velocity were derived in time to obtain Jerk signals (tBodyAccJerk-XYZ and tBodyGyroJerk-XYZ). Also the magnitude of these three-dimensional signals were calculated using the Euclidean norm (tBodyAccMag, tGravityAccMag, tBodyAccJerkMag, tBodyGyroMag, tBodyGyroJerkMag). 
+
+Finally a Fast Fourier Transform (FFT) was applied to some of these signals producing fBodyAcc-XYZ, fBodyAccJerk-XYZ, fBodyGyro-XYZ, fBodyAccJerkMag, fBodyGyroMag, fBodyGyroJerkMag. (Note the 'f' to indicate frequency domain signals). 
+
+These signals were used to estimate variables of the feature vector for each pattern:  
+'-XYZ' is used to denote 3-axial signals in the X, Y and Z directions.
 
 
 
