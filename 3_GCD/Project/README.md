@@ -8,7 +8,7 @@ Human Activity Recognition Using Smartphones: README
 
 ##### A Variation on Human Activity Recognition Using Smartphones Dataset Version 1.0 (see license below)
 
-*Disclaimer: This codebook modifies and updates the original codebooks with the data to indicate all the variables and summaries calculated, along with units, and any other relevant information.*
+*Disclaimer: This readme modifies and updates the original codebooks with the data to indicate all the variables and summaries calculated, along with units, and any other relevant information.*
 
 This data set was created using the following files:
 
