@@ -1,4 +1,4 @@
-Human Activity Recognition Using Smartphones: Codebook
+Human Activity Recognition Using Smartphones: README
 ================
 Katie M Brown
 February 4, 2019
