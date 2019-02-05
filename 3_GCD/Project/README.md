@@ -82,7 +82,7 @@ Phase 6 is designed to group the tidy data set above by activity (6) and subject
 Tidy Data: Independent Data Set - Code Book
 -------------------------------------------
 
-In addition to the original test and training data (which was merged together in one tidy dataset) an independent dataset was created (in Phase 7 of `run_analysis.R`) using a subset of the features provided in the orginal dataset.
+In addition to the original test and training data (which was merged together in one tidy dataset) an independent dataset was created (in Phase 6 of `run_analysis.R`) using a subset of the features provided in the orginal dataset.
 
 For each record in this independent dataset, the following has been provided:
 
