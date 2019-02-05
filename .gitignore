@@ -3,6 +3,7 @@ README.txt
 
 # ignore folder named 'data'
 3_GCD/data/
+3_GCD/Untracked/
 
 # ignore zip files
 *.zip
