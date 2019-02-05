@@ -14,7 +14,9 @@ file.rename('./data/UCI HAR Dataset/','./data/UCI/')
 # reading in Activity Labels
 activity_file <- './data/UCI/activity_labels.txt'
 ActivityLabels <- read.table(activity_file,fill=T,header = FALSE)
-names(ActivityLabels) <- c('ActivityNum','Activity')
+names(ActivityLabels) <- c('ActNum','Activity')
+ActivityLabels <-gsub('_','',ActivityLabels$Activity,fixed = TRUE)
+
 
 # reading in Features
 feat_file <- './data/UCI/features.txt'
@@ -27,7 +29,7 @@ names(Features) <- c('FeatureNum', 'Feature')
 sub_test_file <- './data/UCI/test/subject_test.txt'
 Subjects_test <- read.table(sub_test_file,fill=T,header = FALSE)
 names(Subjects_test) <- c('Subject')
-Subjects <- as.factor(Subjects_test$Subject)
+Subjects <- Subjects_test$Subject
 
 # reading in test data
 test_file <- './data/UCI/test/X_test.txt'
@@ -38,7 +40,7 @@ act_test_file <- './data/UCI/test/y_test.txt'
 Activity_data <- read.table(act_test_file,fill=T,header = FALSE)
 names(Activity_data) <- c('Activity')
 Activity <- as.factor(Activity_data$Activity)
-levels(Activity) <- factor(ActivityLabels$Activity)
+levels(Activity) <- factor(ActivityLabels)
 
 # combining all columns for test data
 test_df <- cbind(test,Subjects,Activity)
@@ -50,7 +52,7 @@ names(test_df) <- c(Features$Feature,'Subject','Activity')
 sub_train_file <- './data/UCI/train/subject_train.txt'
 Subjects_train <- read.table(sub_train_file,fill=T,header = FALSE)
 names(Subjects_train) <- c('Subject')
-Subjects.1 <- as.factor(Subjects_train$Subject)
+Subjects.1 <- Subjects_train$Subject
 
 # reading in train data
 train_file <- './data/UCI/train/X_train.txt'
@@ -61,7 +63,7 @@ act_train_file <- './data/UCI/train/y_train.txt'
 Activity_data.1 <- read.table(act_train_file,fill=T,header = FALSE)
 names(Activity_data.1) <- c('Activity')
 Activity.1 <- as.factor(Activity_data.1$Activity)
-levels(Activity.1) <- factor(ActivityLabels$Activity)
+levels(Activity.1) <- factor(ActivityLabels)
 
 # combining all columns for test data
 train_df <- cbind(train,Subjects.1,Activity.1)
@@ -71,13 +73,15 @@ names(train_df) <- c(Features$Feature,'Subject','Activity')
 
 # merging test and train sets
 merged_df <- rbind(test_df,train_df)
-merged_df <- gsub('-','',merged_df)
+
 
 #------------------------- 5: EXTRACTING RELEVANT DATA ---------------------------#
 
 # creating a vector of relevant indices to extract only mean() and std() data
 relevant_indices <- grep('mean[(][)]|std[(][)]',names(merged_df))
 tidy_df <- merged_df[,c(562:563,relevant_indices)]
+names(tidy_df) <- gsub('-','',names(tidy_df))
+names(tidy_df) <- gsub('[(][)]','',names(tidy_df))
 
 
 #------------------------ 6: AVGs by ACTIVITY & SUBJECT --------------------------#

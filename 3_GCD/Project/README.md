@@ -33,17 +33,17 @@ Phase 1 is designed to allow for reproducibility by downloading a file from (`ac
 
 Phase 2 is designed specifically to read in the Activity Labels and the Features files.
 
-The Activity Labels file is a key that shows what activity is associated with what value. See below:
+The Activity Labels file is a key that shows what activity is associated with what value. We can tidy this up by removing the underscores in the activity.  See below:
 
     ##   ActivityNum           Activity
     ## 1           1            WALKING
-    ## 2           2   WALKING_UPSTAIRS
-    ## 3           3 WALKING_DOWNSTAIRS
+    ## 2           2    WALKINGUPSTAIRS
+    ## 3           3  WALKINGDOWNSTAIRS
     ## 4           4            SITTING
     ## 5           5           STANDING
     ## 6           6             LAYING
 
-The Features file is a list of 561 features. The in depth explanation of these features can be found in the `features_info.txt` file and is also summarized in the supplemental information at the end of this codebook. You can see the head(Features) here:
+The Features file is a list of 561 features. The in depth explanation of these features can be found in the `features_info.txt` file and is also summarized in the supplemental information at the end of this codebook. You can see the head(Features) below. We will tidy this further by removing unnecessary symbols in a later step.
 
     ##   FeatureNum           Feature
     ## 1          1 tBodyAcc-mean()-X
@@ -57,7 +57,7 @@ The Features file is a list of 561 features. The in depth explanation of these f
 
 Phase 3 is segmented into 2 parts, 3a and 3b that read in testing and training data, respectively. For the test data set, a file called `subject_test.txt` is included. In this file, each row identifies the subject who performed the activity for each window sample. Its range is from 1 to 30. There is a file included with the training set as well called `subject_train.txt` that performs the same way. This information was read in and then cast to a factor variable. This allows us to group by subject later on in the analysis. Also for the test data set, a file called `y_test.txt` is included. This is an encoded list of numbers 1-6 that gives us information about the activity that is being done. We can decode this list using the Activity Labels file discussed above. Once this file is read in, it is cast to a factor and the levels are set using the Activity Labels information that was read in during Phase 2. A similar file called `y_train.txt` is included with that training data and it performs the same way.
 
-Next, files called `test.txt` and `train.txt` were read in to their respective tables. Finally the subject, activity and data were combined to create a test data set and a train data set that included columns for a subject ID and descriptive Activity information. The following shows the first 5 columns and the first 5 rows of the test data. This would be similar for the train data:
+Next, files called `test.txt` and `train.txt` were read in to their respective tables. Finally the subject, activity and data were combined to create a test data set and a train data set that included columns for a subject ID and descriptive Activity information. The following shows the first 5 columns and the first 5 rows of the test data. This would be similar for the train data.  The column names will be tidied a later step:
 
     ##   Subject Activity tBodyAcc-mean()-X tBodyAcc-mean()-Y tBodyAcc-mean()-Z
     ## 1       2 STANDING         0.2571778       -0.02328523       -0.01465376
@@ -72,11 +72,11 @@ Phase 4 is designed to merge the test and train data set into data frame of 1029
 
 #### Phase 5
 
-Phase 5 is designed to extract only the measurements on the mean and standard deviation for each measurement. This does not include meanFreq() or angle(-XYZ,gravityMean) data **by design**. This phase left us with a data frame of 10299 observations and 68 variables made up of a Subject column, an Activity column, and a 66-feature vector with time and frequency variables only for those that calculated a *mean()* or a *std()*.
+Phase 5 is designed to extract only the measurements on the mean and standard deviation for each measurement. This does not include meanFreq() or angle(-XYZ,gravityMean) data **by design**. This phase left us with a data frame of 10299 observations and 68 variables made up of a Subject column, an Activity column, and a 66-feature vector with time and frequency variables only for those that calculated a *mean* or a *std*.  This dataset is then further tidied by removing unnecessary symbols, like () and -.  
 
 #### Phase 6
 
-Phase 6 is designed to group the tidy data set above by activity (6) and subject (30). After the data has been grouped, it is passed to the mean function and all the averages for each of the 66-feature vector are found. The resulting data frame of 180 observations (activity x subject) and 68 variables (made up of Subject, Activity and 66- feature vector) is described in the codebook **Tidy Data: Independent Data Set - Code Book**
+Phase 6 is designed to group the tidy data set above by activity (6) and subject (30). After the data has been grouped, it is passed to the mean function and all the averages for each of the 66-feature vector are found. The resulting data frame of 180 observations (activity x subject) and 68 variables (made up of Subject, Activity and 66- feature vector) is described in the codebook **Tidy Data: Independent Data Set - Code Book**.  
 
 Supplemental Information
 ------------------------
