@@ -71,6 +71,7 @@ names(train_df) <- c(Features$Feature,'Subject','Activity')
 
 # merging test and train sets
 merged_df <- rbind(test_df,train_df)
+merged_df <- gsub('-','',merged_df)
 
 #------------------------- 5: EXTRACTING RELEVANT DATA ---------------------------#
 
