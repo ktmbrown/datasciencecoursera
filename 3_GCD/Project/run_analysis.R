@@ -86,6 +86,6 @@ avg_df <- tidy_df %>% group_by(Subject,Activity) %>% summarize_all(mean)
 
 # renaming all variables with "avg." prefix (except Subject and Activity)
 new_avg_names <- paste0('avg.',names(avg_df[-c(1:2)]))
-names(avg_df) <- c('Subject','Activity',new_avg_names)
+names(avg_df) <- c('subject','activity',new_avg_names)
 
 write.table(avg_df,file="independent_dataset.txt",row.name=FALSE)
