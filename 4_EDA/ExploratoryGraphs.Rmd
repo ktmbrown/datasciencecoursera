@@ -1,0 +1,157 @@
+---
+title: "Exploratory Data Analysis: Graphs"
+author: "Katie M Brown"
+date: "February 6, 2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Formulate your Question
+
+A *sharp* question of hypothesis can serve as a dimension reduction tool that can eliminate variables that are not relevant to the question.
+
+We will be looking at an air pollution dataset from the U.S. EPA. The data can be downloaded from here: [data](https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/exploratoryGraphs/PM25data.zip?raw=true)  
+
+A **general** question one could ask about this data is:
+
+> Are air pollution levels higher on the east coast than on the west coast?
+
+A more **specific** question might be:
+
+> Are hourly ozone levels on average higher in New York City than they are in Los Angeles?
+
+Both may be of interest, neither is right or wrong. For this chapter, we will focus on:
+
+> Which counties in the US have the highest levels of ambient ozone pollution?
+
+Side note: ask yourself "Do I have the right data to answer this question?"
+
+### Read in your data
+
+```{r warning=FALSE, message=FALSE}
+library(readr)
+fileurl <- 'https://aqs.epa.gov/aqsweb/airdata/hourly_44201_2014.zip'
+filename <- './Untracked/PM25data.zip'
+
+if (!file.exists(filename)){
+      download.file(fileurl,destfile = filename, mode="wb")
+}  
+if (!file.exists("PM25data")) { 
+      unzip(filename,exdir = './Untracked') 
+}
+
+ozone <- read_csv('Untracked/hourly_44201_2014.csv',col_types = 'ccccinnccccccncnnccccccc')
+```
+
+Make a few adjustments to the column names for later convenience:
+
+```{r warning=FALSE, message=FALSE}
+names(ozone) <- make.names(names(ozone))
+```
+
+### Take a look at your data
+
+Take a look at your dataset with the nrow, ncol and str()
+```{r warning=FALSE, message=FALSE}
+nrow(ozone)
+ncol(ozone)
+str(ozone)
+```
+
+Lets look at some pieces of the dataset.  The first 6 rows and a few columns are here
+```{r warning=FALSE, message=FALSE}
+head(ozone[,c(6:7,10)])
+```
+
+And the last 6 rows with the same columns:
+```{r warning=FALSE, message=FALSE}
+tail(ozone[,c(6:7,10)])
+```
+
+### Check your n's.  
+
+Counting things is a good way to figure out if anything is wrong.  If you're expecting 1,000 observations but there are only 20, something is wrong. 
+
+Identify landmarks that can be used to check against your data.  If you know how many people are in your study, that's something you should check.  
+
+In this example, we have *hourly* data for the *entire country*: 2 landmarks for comparison.  
+
+Hourly ozone data that comes from monitors across the country.  All hours should be represented.  Look at Time.Local to see what time measurements are being taken:
+
+```{r warning=FALSE, message=FALSE}
+table(ozone$Time.Local)
+```
+
+Another thing we can look at are the states that are being represented.
+```{r warning=FALSE, message=FALSE}
+library(dplyr)
+select(ozone, State.Name) %>% unique %>% nrow
+```
+
+To see why our number of states is greater than 50, we can view the unique State.Names:
+```{r warning=FALSE, message=FALSE}
+unique(ozone$State.Name)
+```
+
+Washington D.C., Puerto Rico and Country of Mexico are all represented in this dataset.
+
+### Validation: 1 external source
+
+Match with something outside the dataset.  The U.S. standard set in 2008 is 0.075 ppm.  The 8-hour average concentration should not be too much higher than 0.075 ppm:
+
+```{r warning=FALSE, message=FALSE}
+summary(ozone$Sample.Measurement)
+```
+
+From the summary we an see that the maximum hourly concentration is quite high (0.213 ppm) but in general, the bulk of the distribution is far below 0.075 ppm.  Let's get more detail by looking at the quantiles:
+
+```{r warning=FALSE, message=FALSE}
+quantile(ozone$Sample.Measurement,seq(0,1,.1))
+```
+
+### Try an easy solution
+
+Answer the original question as best you can.
+
+> Which countries in the US have the highest levels of ambient ozone pollution?
+
+```{r warning=FALSE, message=FALSE}
+ranking <- group_by(ozone, State.Name, County.Name) %>% summarize(ozone = mean(Sample.Measurement)) %>% as.data.frame %>% arrange(desc(ozone))
+```
+
+Look at the top 10:
+
+```{r warning=FALSE, message=FALSE}
+head(ranking, 10)
+```
+
+Now look at the 10 lowest counties as a comparison:
+
+```{r warning=FALSE, message=FALSE}
+tail(ranking,10)
+```
+
+Looking at the number of measurements in Mariposa County CA:
+```{r warning=FALSE, message=FALSE}
+filter(ozone, State.Name == "California" & County.Name == "Mariposa") %>% nrow
+```
+
+We can look at how ozone varies through the year by looking at monthly averages.  First we convert to Date class:
+
+```{r warning=FALSE, message=FALSE}
+ozone <- mutate(ozone, Date.Local = as.Date(Date.Local))
+```
+
+And now we spit the date by month to look at the average hourly levels
+```{r warning=FALSE, message=FALSE}
+filter(ozone, State.Name == "California" & County.Name == "Mariposa") %>% mutate(month = factor(months(Date.Local), levels = month.name)) %>% group_by(month) %>% summarize(ozone = mean(Sample.Measurement))
+```
+
+Ozone appears to be higher in summer months AND Nov. and Dec. are missing.  Let's do the same for Caddo County, OK
+
+```{r warning=FALSE, message=FALSE}
+filter(ozone, State.Name == "Oklahoma" & County.Name == "Caddo") %>% mutate(month = factor(months(Date.Local), levels = month.name)) %>% group_by(month) %>% summarize(ozone = mean(Sample.Measurement))
+```
