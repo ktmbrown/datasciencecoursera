@@ -5,6 +5,8 @@ README.txt
 3_GCD/data/
 3_GCD/Untracked/
 4_EDA/Untracked/
+5_SS/data/
+5_SS/Untracked/
 
 # ignore zip files
 *.zip
