@@ -128,7 +128,7 @@ In this section I will:
 
 1. Calculate and report the total number of missing values in the dataset
 2. Devise a strategy for filling in all of the missing values in the dataset. 
-      + The stragegy I used is:_______
+      + The stragegy I used is: **mean per 5-minute interval**
 3. Create a new dataset that is equal to the original dataset but with the missing data filled in.
 4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. 
       + Do these values differ from the estimates from the first part of the assignment? 
@@ -140,9 +140,63 @@ num_nas <- sum(is.na(activity$steps))
 c("Number of NA Values" = num_nas)
 
 # Step 2:
-activity <- merge(activity, aggregate(steps ~ interval, data = activity,
-            mean,rm.na=TRUE),  by = "interval", 
-             suffixes = c("", ".mean"))
-activity <- activity[order(activity$date,activity$interval),]
+activity_imp <- activity %>% group_by(interval) %>% 
+      mutate(steps= ifelse(is.na(steps),median(steps, na.rm = TRUE), steps))
+
+# Step 3:
+activity_imp <- as.data.frame(activity_narm)
+num_nas <- sum(is.na(activity_imp$steps))
+c("Number of NA Values" = num_nas)
+
+# Step 4:
+per_int_narm <- aggregate(activity_narm["steps"], by=activity_narm["interval"], sum)
+
+ggplot() + aes(per_int_narm$steps) + geom_histogram(binwidth=500, colour=shades[6], fill=shades[5]) +
+      geom_vline(xintercept=mean(per_int_narm$steps), lwd=1, linetype=2, color=shades[8]) +
+      geom_label(x=13920, y=8.65, aes(fontface=2),color=shades[7], 
+                label = paste('Mean:',format(round(mean(per_int_narm$steps), 2), nsmall = 2))) +
+      geom_label(x=14140, y=7.7, aes(fontface=2),color=shades[7], 
+                 label = paste('Median:',format(round(median(per_int_narm$steps), 2), nsmall = 2))) +
+      xlab("Steps per Day") +
+      ylab("") +
+      ggtitle("Steps Taken per Day between 10/01/2012 to 11/30/2012")
+
+# Step 5:
+step_mean_narm <- round(mean(per_int_narm$steps, na.rm=TRUE), 2)
+step_median_narm <- round(median(per_int_narm$steps, na.rm=TRUE), 2)
+r1<- c("Mean"= step_mean, "Median" = step_median)
+r2<- c("Mean" = step_mean_narm, "Median" = step_median_narm)
+df_mm <- rbind(r1,r2)
+rownames(df_mm) <- c('Before Mean Imputation', 'After Mean Imputation')
+knitr::kable(df_mm, caption = "Before and After Mean Imputation")
+```
+
+### Are there differences in activity patterns between weekdays and weekends?
+In this section I will:
+
+1. Create a new factor variable in the dataset with two levels - "weekday" and "weekend"
+      + I accomplished this by writing a function called isWeekend that returns a
+      factor value of "weekend" or "weekday"
+2. Make a panel plot containing a time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis)
+
+```{r}
+# Step 1:
+isWeekend <- function(dateVar){
+      weekendList <- c("Saturday","Sunday")
+      if(weekdays(dateVar) %in% weekendList) {
+            as.factor("weekend")
+      } else { as.factor("weekday") }
+}
+
+activity_narm$dayType <- activity_narm$date %>% sapply(isWeekend) 
+knitr::kable(head(activity_narm),caption = 'New variable "dayType" added to dataset' )
+
+# Step 2:
+per_int_narm <- aggregate(activity_narm["steps"], by=activity_narm["interval"], sum)
+ggplot(data=per_int_narm, aes(x=interval, y=steps)) +
+  geom_line()
+
+
+  
 
 ```
