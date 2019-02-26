@@ -140,5 +140,9 @@ num_nas <- sum(is.na(activity$steps))
 c("Number of NA Values" = num_nas)
 
 # Step 2:
+activity <- merge(activity, aggregate(steps ~ interval, data = activity,
+            mean,rm.na=TRUE),  by = "interval", 
+             suffixes = c("", ".mean"))
+activity <- activity[order(activity$date,activity$interval),]
 
 ```
