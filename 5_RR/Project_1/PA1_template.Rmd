@@ -160,6 +160,7 @@ ggplot() + aes(per_day_imp$steps) + geom_histogram(binwidth=900, colour=shades[2
       ylab("") +
       ggtitle("Steps Taken per Day between 10/01/2012 to 11/30/2012")
 
+
 # Step 5:
 step_mean_imp <- round(mean(per_day_imp$steps), 2)
 step_median_imp <- round(median(per_day_imp$steps), 2)
