@@ -164,7 +164,7 @@ r1<- c("Mean"= step_mean, "Median" = step_median)
 r2<- c("Mean" = step_mean_imp, "Median" = step_median_imp)
 df_imp <- rbind(r1,r2)
 rownames(df_imp) <- c('Before Mean Imputation', 'After Mean Imputation')
-knitr::kable(df_imp, caption = "Before and After Mean Imputation")
+knitr::kable(df_imp, caption = "Before and After Mean Imputation",format="markdown" )
 ```
 
 ### Are there differences in activity patterns between weekdays and weekends?
@@ -185,7 +185,7 @@ isWeekend <- function(dateVar){
 }
 
 activity_imp$dayType <- activity_imp$date %>% sapply(isWeekend) 
-knitr::kable(head(activity_imp),caption = 'New variable "dayType" added to dataset' )
+knitr::kable(head(activity_imp),caption = 'New variable "dayType" added to dataset',format="markdown" )
 
 # Step 2:
 per_int_daytyp <- activity_imp %>% group_by(interval,dayType) %>% summarize(mean_steps = mean(steps))
