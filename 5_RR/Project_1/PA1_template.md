@@ -1,8 +1,12 @@
-Reproducible Research Project 1
-================
-Katie M Brown
-February 25, 2019
-
+---
+title: "Reproducible Research Project 1"
+author: "Katie M Brown"
+date: "February 25, 2019"
+output: 
+  html_document: 
+    fig_caption: yes
+    keep_md: yes
+---
 
 ### Loading and Pre-processing data
 In this section I will:
@@ -250,17 +254,15 @@ r1<- c("Mean"= step_mean, "Median" = step_median)
 r2<- c("Mean" = step_mean_imp, "Median" = step_median_imp)
 df_imp <- rbind(r1,r2)
 rownames(df_imp) <- c('Before Mean Imputation', 'After Mean Imputation')
-knitr::kable(df_imp, caption = "Before and After Mean Imputation")
+knitr::kable(df_imp, caption = "Before and After Mean Imputation",format="markdown" )
 ```
 
 
 
-Table: Before and After Mean Imputation
-
-                              Mean     Median
------------------------  ---------  ---------
-Before Mean Imputation    10766.19   10765.00
-After Mean Imputation     10766.19   10766.19
+|                       |     Mean|   Median|
+|:----------------------|--------:|--------:|
+|Before Mean Imputation | 10766.19| 10765.00|
+|After Mean Imputation  | 10766.19| 10766.19|
 
 ### Are there differences in activity patterns between weekdays and weekends?
 In this section I will:
@@ -281,21 +283,19 @@ isWeekend <- function(dateVar){
 }
 
 activity_imp$dayType <- activity_imp$date %>% sapply(isWeekend) 
-knitr::kable(head(activity_imp),caption = 'New variable "dayType" added to dataset' )
+knitr::kable(head(activity_imp),caption = 'New variable "dayType" added to dataset',format="markdown" )
 ```
 
 
 
-Table: New variable "dayType" added to dataset
-
-       steps  date         interval   dayType 
-------------  -----------  ---------  --------
- 1.716981132  2012-10-01   0          weekday 
- 0.339622642  2012-10-01   5          weekday 
- 0.132075472  2012-10-01   10         weekday 
- 0.150943396  2012-10-01   15         weekday 
- 0.075471698  2012-10-01   20         weekday 
- 2.094339623  2012-10-01   25         weekday 
+|       steps|date       |interval |dayType |
+|-----------:|:----------|:--------|:-------|
+| 1.716981132|2012-10-01 |0        |weekday |
+| 0.339622642|2012-10-01 |5        |weekday |
+| 0.132075472|2012-10-01 |10       |weekday |
+| 0.150943396|2012-10-01 |15       |weekday |
+| 0.075471698|2012-10-01 |20       |weekday |
+| 2.094339623|2012-10-01 |25       |weekday |
 
 ```r
 # Step 2:
