@@ -1,8 +1,12 @@
-Reproducible Research Project 1
-================
-Katie M Brown
-February 25, 2019
-
+---
+title: "Reproducible Research Project 1"
+author: "Katie M Brown"
+date: "February 25, 2019"
+output: 
+  html_document: 
+    fig_caption: yes
+    keep_md: yes
+---
 
 ### Loading and Pre-processing data
 In this section I will:
