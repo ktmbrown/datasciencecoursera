@@ -1,0 +1,74 @@
+---
+title: "Effects of storms on population and economic health"
+author: "Katie M Brown"
+date: "February 27, 2019"
+output: 
+  html_document: 
+    fig_caption: yes
+    keep_md: yes
+---
+### Abstract
+Storms and other severe weather events can cause both public health and economic problems for communities and municipalities. Many severe events can result in fatalities, injuries, and property damage, and preventing such outcomes to the extent possible is a key concern.
+
+This analysis involves exploring the U.S. National Oceanic and Atmospheric Administration's (NOAA) storm database. This database tracks characteristics of major storms and weather events in the United States.
+
+**RESULTS GO HERE**
+
+### Data Processing
+The following steps describe the how the data was processed.
+
+1. Read the data from online source
+2. Look over the data
+3. Subset dataframe by selecting columns needed for analysis
+4. Transform BGN_DATE variable from character to accurately reflect data type
+5. Check for NAs in subsetted dataframe
+
+```{r, message=FALSE}
+library(dplyr)
+library(RColorBrewer)
+library(ggplot2)
+
+# Step 1:
+if(!file.exists("./data")) {
+      dir.create("./data")
+}
+
+if(!file.exists("./data/FStormData.csv.bz2")) {
+      url <- 'https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2'
+      download.file(url, destfile = './data/FStormData.csv.bz2',method='curl' )
+}
+
+fstorm_df <- read.csv('data/FStormData.csv.bz2', nrows=100)
+
+# Step 2:
+str(fstorm_df)
+
+# Step 3: 
+storm <- select(fstorm_df,c('BGN_DATE','EVTYPE','FATALITIES','PROPDMG','CROPDMG'))
+head(storm)
+
+# Step 4:
+storm$BGN_DATE <- as.Date(storm$BGN_DATE,"%m/%d/%Y %H:%M:%S")
+head(storm)
+levels(storm$EVTYPE)
+# Step 5:
+c("NAs in data" = sum(is.na(storm)))
+
+```
+
+### Results
+The following questions will be addressed in this analysis:
+
+1. **Across the United States, which types of events are most harmful with respect to population health?** 
+2. **Across the United States, which types of events have the greatest economic consequences? **
+
+
+#### Question 1
+To answer this question, we will look at the total sum of fatalities for each storm type and plot 
+
+```{r}
+df <- aggregate(storm["FATALITIES"], by=storm["EVTYPE"], sum)
+df <- df[df$FATALITIES>0,]
+
+df$EVTYPE[grep("^[^SNOW]*ICE|ICY[^SNOW]*$",df$EVTYPE)] <- "ICE"
+```
