@@ -119,6 +119,14 @@ head(storm)
 ```
 
 ```r
+levels(storm$EVTYPE)
+```
+
+```
+## [1] "HAIL"      "TORNADO"   "TSTM WIND"
+```
+
+```r
 # Step 5:
 c("NAs in data" = sum(is.na(storm)))
 ```
@@ -136,4 +144,12 @@ The following questions will be addressed in this analysis:
 
 
 #### Question 1
+To answer this question, we will look at the total sum of fatalities for each storm type and plot 
 
+
+```r
+df <- aggregate(storm["FATALITIES"], by=storm["EVTYPE"], sum)
+df <- df[df$FATALITIES>0,]
+df$CODE <- NA
+df$CODE[grep("^[^SNOW]*ICE|ICY[^SNOW]*$",df$EVTYPE)] <- "ICE"
+```

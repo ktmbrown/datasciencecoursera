@@ -23,7 +23,7 @@ The following steps describe the how the data was processed.
 4. Transform BGN_DATE variable from character to accurately reflect data type
 5. Check for NAs in subsetted dataframe
 
-```{r, message=FALSE}
+```{r cachedChunk, cache=TRUE, message=FALSE}
 library(dplyr)
 library(RColorBrewer)
 library(ggplot2)
@@ -69,6 +69,6 @@ To answer this question, we will look at the total sum of fatalities for each st
 ```{r}
 df <- aggregate(storm["FATALITIES"], by=storm["EVTYPE"], sum)
 df <- df[df$FATALITIES>0,]
-
-df$EVTYPE[grep("^[^SNOW]*ICE|ICY[^SNOW]*$",df$EVTYPE)] <- "ICE"
+df$CODE <- NA
+df$CODE[grep("^[^SNOW]*ICE|ICY[^SNOW]*$",df$EVTYPE)] <- "ICE"
 ```

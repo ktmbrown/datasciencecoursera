@@ -284,6 +284,8 @@ head(storm)</code></pre>
 ## 4 1951-06-08 TORNADO          0     2.5       0
 ## 5 1951-11-15 TORNADO          0     2.5       0
 ## 6 1951-11-15 TORNADO          0     2.5       0</code></pre>
+<pre class="r"><code>levels(storm$EVTYPE)</code></pre>
+<pre><code>## [1] &quot;HAIL&quot;      &quot;TORNADO&quot;   &quot;TSTM WIND&quot;</code></pre>
 <pre class="r"><code># Step 5:
 c(&quot;NAs in data&quot; = sum(is.na(storm)))</code></pre>
 <pre><code>## NAs in data 
@@ -298,6 +300,11 @@ c(&quot;NAs in data&quot; = sum(is.na(storm)))</code></pre>
 </ol>
 <div id="question-1" class="section level4">
 <h4>Question 1</h4>
+<p>To answer this question, we will look at the total sum of fatalities for each storm type and plot</p>
+<pre class="r"><code>df &lt;- aggregate(storm[&quot;FATALITIES&quot;], by=storm[&quot;EVTYPE&quot;], sum)
+df &lt;- df[df$FATALITIES&gt;0,]
+df$CODE &lt;- NA
+df$CODE[grep(&quot;^[^SNOW]*ICE|ICY[^SNOW]*$&quot;,df$EVTYPE)] &lt;- &quot;ICE&quot;</code></pre>
 </div>
 </div>
 
