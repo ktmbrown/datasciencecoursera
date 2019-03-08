@@ -54,9 +54,11 @@ ggplot() + aes(df$steps) + geom_histogram(binwidth=600, colour=shades[6], fill=s
       xlab("Steps per Day") +
       ylab("")
 
+
 # number of steps in interval
 activity$interval <- as.factor(activity$interval)
-levels(activity$interval)
 per_interval <- aggregate(activity["steps"], by=activity["interval"], mean, na.rm=TRUE)
+
 ggplot(data=per_interval, aes(x=interval, y=steps, group=1)) +
-      geom_line(color=shades[6]) 
+      geom_line(color=shades[6],size=1.02) +
+      scale_x_discrete(breaks=seq(0,2500,by=100), labels=seq(0,2500,by=100))
